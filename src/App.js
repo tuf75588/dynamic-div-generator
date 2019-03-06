@@ -1,25 +1,49 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import './index.css';
+
+import Create from './components/Create';
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      count: 6,
+      subtract: false
+    };
+  }
+  componentDidMount() {
+    this.autoPlay();
+  }
+  autoPlay = () => {
+    let play = setInterval(() => {
+      let count = this.state.count;
+      let newCount;
+
+      if (count === 75) {
+        this.setState({
+          subtract: true
+        });
+      } else if (count === 0) {
+        this.setState({
+          subtract: false
+        });
+      }
+
+      if (this.state.subtract) {
+        newCount = count - 1;
+      } else if (!this.state.subtract) {
+        newCount = count + 1;
+      }
+
+      this.setState({
+        count: newCount
+      });
+    }, 40);
+  };
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+      <div className='mainContainer'>
+        <Create count={this.state.count} />
       </div>
     );
   }
